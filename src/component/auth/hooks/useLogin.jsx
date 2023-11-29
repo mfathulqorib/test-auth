@@ -16,25 +16,47 @@ export const useLogin = () => {
   }
 
   async function handleLogin() {
-    setLoading(true);
-    const { email, password } = loginData;
-    const res = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-    const data = await res.json();
+    try {
+      const { email, password } = loginData;
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-    if (!data) {
+      if (res.status === 200) {
+        setLoading(false);
+        console.log(data);
+        return data;
+      } else {
+        setLoading(false);
+        console.log(data.message);
+      }
+    } catch (error) {
       setLoading(false);
-      console.log("error!");
-      return;
     }
 
-    setLoading(false);
-    console.log(data);
+    // setLoading(true);
+    // const res = await fetch(`${API_URL}/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ name, email, password }),
+    // });
+    // const data = await res.json();
+
+    // if (!data) {
+    //   setLoading(false);
+    //   console.log("error!");
+    //   return;
+    // }
+
+    // setLoading(false);
+    // console.log(data);
   }
 
   return { loading, handleChange, handleLogin };
