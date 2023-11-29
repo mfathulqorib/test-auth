@@ -27,7 +27,11 @@ export const Register = () => {
         type="password"
         onChange={handleChange}
       ></Input>
-      <Button color="primary" onClick={handleSubmitRegister}>
+      <Button
+        isDisabled={loading}
+        color="primary"
+        onClick={handleSubmitRegister}
+      >
         Register
       </Button>
       <div className="flex gap-1">

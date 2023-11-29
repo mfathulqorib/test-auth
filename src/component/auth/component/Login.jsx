@@ -22,7 +22,7 @@ export const Login = () => {
         name="password"
         onChange={handleChange}
       ></Input>
-      <Button color="primary" onClick={handleLogin}>
+      <Button isDisabled={loading} color="primary" onClick={handleLogin}>
         Login
       </Button>
       <div className="flex gap-1">

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { API_URL } from "@/config/apiUrl";
+import toast from "react-hot-toast";
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -30,12 +31,12 @@ export const useRegister = () => {
 
     if (!data) {
       setLoading(false);
-      console.log("error!");
+      toast.error("Error registering...");
       return;
     }
 
     setLoading(false);
-    console.log(data);
+    toast.success("User registered, please login");
 
     //     try {
     //       const res = await fetch(`${API_URL}/register`, {

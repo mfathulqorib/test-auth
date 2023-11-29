@@ -1,6 +1,6 @@
 import { Register } from "@/component/auth/component/Register";
 
-export default function Home() {
+export default function Page() {
   return (
     <main>
       <Register />
