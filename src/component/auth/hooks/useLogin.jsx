@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { API_URL } from "@/config/apiUrl";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
@@ -21,8 +20,9 @@ export const useLogin = () => {
 
   async function handleLogin() {
     const { email, password } = loginData;
-    setLoading(true);
-    try {
+    if (email && password) {
+      setLoading(true);
+
       const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
@@ -36,37 +36,38 @@ export const useLogin = () => {
         setLoading(false);
         // console.log(data);
         Cookies.set("token", data.token);
-        toast.success("Login success. Redirecting...");
         setTimeout(() => router.push("/dashboard"), 1000);
+        return "Login success. Redirecting...";
       } else {
+        setLoginData({
+          ...loginData,
+          password: "",
+        });
         setLoading(false);
-        // console.log(data.message);
-        toast.error(`Login failed ${data.message}`);
+        throw data.message;
       }
-    } catch (error) {
-      toast.error(`Login failed, ${error}`);
-      setLoading(false);
+
+      // setLoading(true);
+      // const res = await fetch(`${API_URL}/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ name, email, password }),
+      // });
+      // const data = await res.json();
+
+      // if (!data) {
+      //   setLoading(false);
+      //   console.log("error!");
+      //   return;
+      // }
+
+      // setLoading(false);
+      // console.log(data);
+    } else {
+      throw "Login failed, please input email and password";
     }
-
-    // setLoading(true);
-    // const res = await fetch(`${API_URL}/login`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ name, email, password }),
-    // });
-    // const data = await res.json();
-
-    // if (!data) {
-    //   setLoading(false);
-    //   console.log("error!");
-    //   return;
-    // }
-
-    // setLoading(false);
-    // console.log(data);
   }
-
-  return { loading, handleChange, handleLogin };
+  return { loading, handleChange, handleLogin, loginData };
 };
